@@ -6697,6 +6697,7 @@ nn_functional_tests = [
     ('affine_grid', (S, 2, 3), (torch.Size([S, 1, 7, 7]),),),
     ('pad', (3, 3, 4, 2), ([1, 1],),),
     ('pairwise_distance', (S, S), ((S, S),),),
+    ('pdist', (S,), ((S,),),),
     ('cosine_similarity', (S, S), ((S, S),),),
     ('triplet_margin_loss', (S, S), ((S, S), (S, S)),),
     ('normalize', (S, S, S), (),),

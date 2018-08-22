@@ -4821,6 +4821,11 @@ class TestNN(NNTestCase):
         input2 = torch.randn(4, 4, requires_grad=True)
         self.assertTrue(gradcheck(lambda x, y: F.pairwise_distance(x, y), (input1, input2)))
 
+    def test_pdist(self):
+        inp = torch.randn(3, 4, requires_grad=True)
+        for p in [0, 1]: # 2, 0.5, 1.5, 2.5, np.inf]: FIXME
+            self.assertTrue(gradcheck(lambda x: F.pdist(x, p), (inp,)))
+
     def test_cosine_embedding_loss_no_reduce(self):
         input1 = torch.randn(15, 10, requires_grad=True)
         input2 = torch.randn(15, 10, requires_grad=True)

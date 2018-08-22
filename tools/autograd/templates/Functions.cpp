@@ -4,6 +4,7 @@
 #include <ATen/WrapDimUtils.h>
 #include <ATen/WrapDimUtilsMulti.h>
 #include <ATen/ExpandUtils.h>
+#include "ATen/Parallel.h"
 #include <THNN/Reduction.h>
 
 // define constants like M_PI and C keywords for MSVC
@@ -101,6 +102,13 @@ Tensor norm_backward(const Tensor & grad, const Tensor & self, const Scalar & p_
   // handle case at 0 where we return a subgradient containing 0
   scale_v.masked_fill_(norm == 0, 0);
   return self_scaled * scale_v;
+}
+
+
+Tensor pdist_backward(const Tensor& grad, const Tensor& self, const double p, const Tensor& pdist) {
+  Tensor result = zeros_like(self);
+  pdist_backward_kernel(kCPU, result, grad, self, p, pdist);
+  return result;
 }
 
 Tensor norm_backward(Tensor grad, const Tensor & self, const Scalar & p_, Tensor norm, int64_t dim, bool keepdim) {
